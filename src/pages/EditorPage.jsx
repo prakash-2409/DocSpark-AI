@@ -234,12 +234,24 @@ const EditorPage = ({ fileId, onNavigate }) => {
 
       {/* Editor Canvas */}
       {loading ? (
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full" />
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+          <div className="relative">
+            <div className="w-12 h-12 border-3 border-blue-600/20 rounded-full" />
+            <div className="absolute inset-0 w-12 h-12 border-3 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+          <p className="text-sm text-gray-400 animate-pulse">Loading document...</p>
         </div>
       ) : (
-        <div className="mt-4 bg-white shadow-2xl border border-gray-200 dark:border-gray-700/50 rounded-xl min-h-[80vh] overflow-hidden transition-all duration-300">
-          <EditorContent editor={editor} />
+        <div className="editor-paper-wrapper mt-4 relative group">
+          {/* Subtle paper shadow layers for depth */}
+          <div className="absolute -bottom-1 left-3 right-3 h-4 bg-gray-200/40 dark:bg-gray-800/40 rounded-b-2xl blur-sm -z-10" />
+          <div className="absolute -bottom-2 left-6 right-6 h-4 bg-gray-200/20 dark:bg-gray-800/20 rounded-b-2xl blur-md -z-20" />
+
+          <div className="editor-paper bg-white dark:bg-gray-900 rounded-2xl overflow-hidden transition-all duration-500 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)] ring-1 ring-gray-200/80 dark:ring-gray-700/50 group-hover:shadow-[0_20px_60px_-12px_rgba(0,0,0,0.15)]">
+            {/* Decorative ruler marks at top */}
+            <div className="h-1 bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent" />
+            <EditorContent editor={editor} />
+          </div>
         </div>
       )}
 

@@ -23,11 +23,161 @@
   }
 }
 
+/* ── ProseMirror Editor ───────────────────────────────────── */
 .ProseMirror {
-  @apply outline-none min-h-[500px] p-4;
+  @apply outline-none min-h-[500px];
+  padding: 2.5rem 3.5rem;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: #1a1a2e;
+  caret-color: #3b82f6;
+}
+
+.dark .ProseMirror {
+  color: #e2e8f0;
+  caret-color: #60a5fa;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
-  @apply text-gray-400 float-left h-0 pointer-events-none;
+  @apply text-gray-300 dark:text-gray-600 float-left h-0 pointer-events-none;
+  font-style: italic;
+}
+
+/* Selection highlight */
+.ProseMirror ::selection {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.dark .ProseMirror ::selection {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+/* Smooth heading styles */
+.ProseMirror h1 {
+  @apply text-3xl font-bold mt-8 mb-4 text-gray-900 dark:text-white;
+  letter-spacing: -0.025em;
+}
+
+.ProseMirror h2 {
+  @apply text-2xl font-semibold mt-6 mb-3 text-gray-800 dark:text-gray-100;
+  letter-spacing: -0.02em;
+}
+
+.ProseMirror h3 {
+  @apply text-xl font-semibold mt-5 mb-2 text-gray-700 dark:text-gray-200;
+}
+
+/* Paragraph spacing */
+.ProseMirror p {
+  @apply mb-4;
+}
+
+/* Blockquote */
+.ProseMirror blockquote {
+  @apply border-l-4 border-blue-400 dark:border-blue-500 pl-5 py-1 my-4 italic;
+  @apply text-gray-600 dark:text-gray-400 bg-blue-50/50 dark:bg-blue-900/10 rounded-r-lg;
+}
+
+/* Code blocks */
+.ProseMirror pre {
+  @apply bg-gray-900 dark:bg-gray-950 text-gray-100 rounded-xl p-5 my-4 overflow-x-auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.ProseMirror code {
+  @apply bg-gray-100 dark:bg-gray-800 text-pink-600 dark:text-pink-400 px-1.5 py-0.5 rounded-md;
+  font-size: 0.875em;
+}
+
+.ProseMirror pre code {
+  @apply bg-transparent text-inherit p-0;
+}
+
+/* Lists */
+.ProseMirror ul {
+  @apply list-disc pl-6 mb-4 space-y-1;
+}
+
+.ProseMirror ol {
+  @apply list-decimal pl-6 mb-4 space-y-1;
+}
+
+.ProseMirror li {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+.ProseMirror li p {
+  @apply mb-1;
+}
+
+/* Horizontal rule */
+.ProseMirror hr {
+  @apply my-8 border-none h-px;
+  background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+}
+
+.dark .ProseMirror hr {
+  background: linear-gradient(90deg, transparent, #374151, transparent);
+}
+
+/* Links */
+.ProseMirror a {
+  @apply text-blue-600 dark:text-blue-400 underline decoration-blue-300 dark:decoration-blue-600 underline-offset-2;
+  @apply hover:decoration-blue-500 dark:hover:decoration-blue-400 transition-colors;
+}
+
+/* Tables */
+.ProseMirror table {
+  @apply w-full border-collapse my-4 rounded-lg overflow-hidden;
+}
+
+.ProseMirror th {
+  @apply bg-gray-100 dark:bg-gray-800 font-semibold text-left p-3 border border-gray-200 dark:border-gray-700;
+}
+
+.ProseMirror td {
+  @apply p-3 border border-gray-200 dark:border-gray-700;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  @apply bg-gray-200 dark:bg-gray-700 rounded-full;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-300 dark:bg-gray-600;
+}
+
+/* ── Custom animations ────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-from-bottom-2 {
+  from { transform: translateY(8px) translateX(-50%); opacity: 0; }
+  to { transform: translateY(0) translateX(-50%); opacity: 1; }
+}
+
+.animate-in {
+  animation: fade-in 150ms ease-out, slide-in-from-bottom-2 150ms ease-out;
+}
+
+/* ── Editor Paper Wrapper Enhancements ────────────────────── */
+.editor-wrapper {
+  @apply w-full;
+}
+
+.editor-paper .ProseMirror:focus {
+  @apply outline-none;
 }
