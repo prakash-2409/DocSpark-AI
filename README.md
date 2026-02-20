@@ -344,8 +344,6 @@ MIT License - feel free to use this for your own projects!
 
 Built with ❤️ using:
 - [React](https://react.dev/)
-- [TipTap](https://tiptap.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
 - [Framer Motion](https://www.framer.com/motion/)
 
 
