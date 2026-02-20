@@ -347,7 +347,7 @@ Built with ❤️ using:
 - [TipTap](https://tiptap.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Framer Motion](https://www.framer.com/motion/)
-- [Lucide Icons](https://lucide.dev/)
+
 
 ---
 
