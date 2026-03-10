@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FileText, Plus, Upload, FolderOpen, Search,
@@ -20,7 +21,8 @@ import { parseFile } from '../lib/fileParser';
  *  - Open, rename, or delete documents
  *  - Search / filter by name
  */
-const QuickAccessPage = ({ onNavigate }) => {
+const QuickAccessPage = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -63,7 +65,7 @@ const QuickAccessPage = ({ onNavigate }) => {
       htmlContent: '<p></p>',
       size: 0,
     });
-    onNavigate('editor', id);
+    navigate(`/editor/${id}`);
   };
 
   // Import file from device
@@ -86,7 +88,7 @@ const QuickAccessPage = ({ onNavigate }) => {
       await loadFiles();
       // PDFs and images open in viewer (render as-is); others open in editor
       const viewerTypes = ['pdf', 'image'];
-      onNavigate(viewerTypes.includes(parsed.type) ? 'file-viewer' : 'editor', id);
+      navigate(viewerTypes.includes(parsed.type) ? `/file-viewer/${id}` : `/editor/${id}`);
     } catch (err) {
       console.error('Import failed:', err);
       setImportError('Failed to import file. Please try a different format.');
@@ -94,7 +96,7 @@ const QuickAccessPage = ({ onNavigate }) => {
       setImporting(false);
       e.target.value = '';
     }
-  }, [onNavigate]);
+  }, [navigate]);
 
   // Handle drag and drop
   const [isDragging, setIsDragging] = useState(false);
@@ -129,7 +131,7 @@ const QuickAccessPage = ({ onNavigate }) => {
       });
       await loadFiles();
       const viewerTypes = ['pdf', 'image'];
-      onNavigate(viewerTypes.includes(parsed.type) ? 'file-viewer' : 'editor', id);
+      navigate(viewerTypes.includes(parsed.type) ? `/file-viewer/${id}` : `/editor/${id}`);
     } catch (err) {
       console.error('Import failed:', err);
       setImportError('Failed to import file.');
@@ -157,9 +159,9 @@ const QuickAccessPage = ({ onNavigate }) => {
     try {
       const doc = await getFile(id);
       const viewerTypes = ['pdf', 'image'];
-      onNavigate(viewerTypes.includes(doc?.type) ? 'file-viewer' : 'editor', id);
+      navigate(viewerTypes.includes(doc?.type) ? `/file-viewer/${id}` : `/editor/${id}`);
     } catch {
-      onNavigate('editor', id);
+      navigate(`/editor/${id}`);
     }
   };
 

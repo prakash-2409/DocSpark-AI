@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   FileText, Upload, Shield, Globe, Smartphone, Lock,
@@ -12,7 +13,8 @@ import { saveFile } from '../lib/storage';
  * LocalEditorPage — SEO landing page for /local-document-editor.
  * Targets "local document editor" / "offline document editor" queries.
  */
-const LocalEditorPage = ({ onNavigate }) => {
+const LocalEditorPage = () => {
+  const navigate = useNavigate();
   const handleImport = useCallback(async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -25,12 +27,12 @@ const LocalEditorPage = ({ onNavigate }) => {
         htmlContent: parsed.htmlContent,
         size: file.size,
       });
-      onNavigate('editor', id);
+      navigate(`/editor/${id}`);
     } catch (err) {
       alert('Failed to open file.');
     }
     e.target.value = '';
-  }, [onNavigate]);
+  }, [navigate]);
 
   const handleNew = async () => {
     const id = await saveFile({
@@ -39,7 +41,7 @@ const LocalEditorPage = ({ onNavigate }) => {
       htmlContent: '<p></p>',
       size: 0,
     });
-    onNavigate('editor', id);
+    navigate(`/editor/${id}`);
   };
 
   return (

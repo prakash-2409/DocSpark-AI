@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   FileText, Upload, Shield, Zap, Check, Edit3, Eye,
@@ -12,7 +13,8 @@ import { saveFile } from '../lib/storage';
  * EditPdfPage — PDF Tools landing page.
  * Opens PDFs in the as-is viewer (FileViewerPage), not the text editor.
  */
-const EditPdfPage = ({ onNavigate }) => {
+const EditPdfPage = () => {
+  const navigate = useNavigate();
   const handleImportPdf = useCallback(async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -26,12 +28,12 @@ const EditPdfPage = ({ onNavigate }) => {
         size: file.size,
       });
       // Open in file viewer (renders PDF as-is on canvas)
-      onNavigate('file-viewer', id);
+      navigate(`/file-viewer/${id}`);
     } catch (err) {
       alert('Failed to open PDF. It may be corrupted or encrypted.');
     }
     e.target.value = '';
-  }, [onNavigate]);
+  }, [navigate]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -69,7 +71,7 @@ const EditPdfPage = ({ onNavigate }) => {
       {/* Quick Tools */}
       <section className="grid sm:grid-cols-3 gap-4">
         <button
-          onClick={() => onNavigate('pdf-merge')}
+          onClick={() => navigate('/pdf-merge')}
           className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all group"
         >
           <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -82,7 +84,7 @@ const EditPdfPage = ({ onNavigate }) => {
         </button>
 
         <button
-          onClick={() => onNavigate('image-to-pdf')}
+          onClick={() => navigate('/image-to-pdf')}
           className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:shadow-lg hover:border-purple-200 dark:hover:border-purple-800 transition-all group"
         >
           <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -95,7 +97,7 @@ const EditPdfPage = ({ onNavigate }) => {
         </button>
 
         <button
-          onClick={() => onNavigate('word-to-pdf')}
+          onClick={() => navigate('/word-to-pdf')}
           className="flex flex-col items-center gap-3 p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:shadow-lg hover:border-sky-200 dark:hover:border-sky-800 transition-all group"
         >
           <div className="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">

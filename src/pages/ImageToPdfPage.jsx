@@ -17,7 +17,7 @@ import { trackAndStamp } from '../lib/exportLimit';
  * Per-image: rotation, flip, brightness, contrast, scale, fit mode, orientation
  * Global: page size, quality, margins, orientation
  */
-const ImageToPdfPage = ({ onNavigate }) => {
+const ImageToPdfPage = () => {
   const [images, setImages] = useState([]);
   const [converting, setConverting] = useState(false);
   const [error, setError] = useState(null);

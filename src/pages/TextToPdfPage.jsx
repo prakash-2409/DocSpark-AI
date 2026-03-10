@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Editor from '../components/Editor';
 import { FileType, FileText, Download } from 'lucide-react';
-import { jsPDF } from 'jspdf';
-import { saveAs } from 'file-saver';
-import { Document, Packer, Paragraph, TextRun } from 'docx';
-import { trackAndStamp } from '../lib/exportLimit';
+import { exportToPDF, exportToDOCX, exportToTXT } from '../lib/exportService';
 
 const TextToPdfPage = () => {
     const [content, setContent] = useState('<p>Start writing...</p>');
@@ -15,31 +12,8 @@ const TextToPdfPage = () => {
     const handleExportPDF = async () => {
         if (!editorInstance) return;
         setIsExporting(true);
-
         try {
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            // We need to target the ProseMirror content div
-            // Since we don't have a direct ref to the inner div from here easily without modifying Editor, 
-            // we will select by class which is generally safe in this app structure.
-            const editorContent = document.querySelector('.ProseMirror');
-
-            if (editorContent) {
-                await doc.html(editorContent, {
-                    callback: function (doc) {
-                        trackAndStamp(doc);
-                        doc.save('document.pdf');
-                    },
-                    x: 10,
-                    y: 10,
-                    width: 190, // A4 width (210) - margins (20)
-                    windowWidth: 800 // Virtual window width for rendering CSS
-                });
-            }
+            await exportToPDF('document');
         } catch (error) {
             console.error("PDF Export failed:", error);
             alert("Failed to create PDF. Please try again.");
@@ -48,30 +22,18 @@ const TextToPdfPage = () => {
         }
     };
 
-    const handleExportDOCX = () => {
+    const handleExportDOCX = async () => {
         if (!editorInstance) return;
-        const text = editorInstance.getText();
-        const doc = new Document({
-            sections: [{
-                properties: {},
-                children: text.split('\n').map(line => new Paragraph({
-                    children: [
-                        new TextRun(line),
-                    ],
-                })),
-            }],
-        });
-
-        Packer.toBlob(doc).then(blob => {
-            saveAs(blob, "document.docx");
-        });
+        try {
+            await exportToDOCX(editorInstance, 'document');
+        } catch (error) {
+            console.error("DOCX Export failed:", error);
+        }
     };
 
     const handleExportTXT = () => {
         if (!editorInstance) return;
-        const text = editorInstance.getText();
-        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-        saveAs(blob, "document.txt");
+        exportToTXT(editorInstance, 'document');
     };
 
     return (

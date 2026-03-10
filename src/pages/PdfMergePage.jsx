@@ -21,7 +21,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
  *  3. Click "Merge" — renders every page to canvas, then builds a new PDF via jsPDF
  *  4. Download the merged PDF
  */
-const PdfMergePage = ({ onNavigate }) => {
+const PdfMergePage = () => {
   const [pdfFiles, setPdfFiles] = useState([]);
   const [merging, setMerging] = useState(false);
   const [error, setError] = useState(null);

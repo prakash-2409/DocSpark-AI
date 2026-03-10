@@ -18,7 +18,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
  * Strategy: re-render every page to canvas, then re-build PDF with
  * JPEG compression at a user-chosen quality setting OR a custom target KB.
  */
-const CompressPdfPage = ({ onNavigate }) => {
+const CompressPdfPage = () => {
   const [file, setFile] = useState(null);       // { name, rawData, numPages, size }
   const [quality, setQuality] = useState('medium');
   const [targetKb, setTargetKb] = useState('');   // custom target in KB

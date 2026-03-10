@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { Upload, FileText, Check, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 import mammoth from 'mammoth';
 import { jsPDF } from 'jspdf';
@@ -8,7 +9,8 @@ import { saveAs } from 'file-saver';
 import { parseFile } from '../lib/fileParser';
 import { saveFile } from '../lib/storage';
 
-const WordToPdfPage = ({ onNavigate }) => {
+const WordToPdfPage = () => {
+    const navigate = useNavigate();
     const [isDragging, setIsDragging] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [error, setError] = useState(null);
@@ -155,7 +157,6 @@ const WordToPdfPage = ({ onNavigate }) => {
             </div>
 
             {/* Or open in editor */}
-            {onNavigate && (
                 <div className="mt-6 text-center">
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
                         Want to edit it first? Open the Word file in our universal editor.
@@ -180,7 +181,7 @@ const WordToPdfPage = ({ onNavigate }) => {
                                         htmlContent: parsed.htmlContent,
                                         size: file.size,
                                     });
-                                    onNavigate('editor', id);
+                                    navigate(`/editor/${id}`);
                                 } catch (err) {
                                     alert('Failed to open file.');
                                 }
@@ -189,7 +190,6 @@ const WordToPdfPage = ({ onNavigate }) => {
                         />
                     </label>
                 </div>
-            )}
 
             {/* SEO Content Section */}
             <section className="prose prose-lg dark:prose-invert max-w-none bg-white dark:bg-gray-900/50 p-8 rounded-2xl border border-gray-100 dark:border-gray-800">

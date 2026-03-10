@@ -17,7 +17,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
  *
  * Users select which pages to include, then download a new PDF with only those pages.
  */
-const PdfSplitPage = ({ onNavigate }) => {
+const PdfSplitPage = () => {
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState([]);       // { num, thumbnail, selected }
   const [extracting, setExtracting] = useState(false);

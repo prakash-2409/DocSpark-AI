@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   FileText, Plus, Upload, FolderOpen, Shield, Zap, Wifi, WifiOff,
@@ -15,7 +16,8 @@ import { getFileTypeColor } from '../lib/fileParser';
  * Shows recent documents, quick actions, and feature highlights.
  * This is the first thing users see when they open the app.
  */
-const HomePage = ({ onNavigate }) => {
+const HomePage = () => {
+  const navigate = useNavigate();
   const [recentFiles, setRecentFiles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +43,7 @@ const HomePage = ({ onNavigate }) => {
       htmlContent: '<p></p>',
       size: 0,
     });
-    onNavigate('editor', id);
+    navigate(`/editor/${id}`);
   };
 
   const handleImport = useCallback(async (e) => {
@@ -58,13 +60,13 @@ const HomePage = ({ onNavigate }) => {
       });
       // PDFs and images → viewer (render as-is); others → editor
       const viewerTypes = ['pdf', 'image'];
-      onNavigate(viewerTypes.includes(parsed.type) ? 'file-viewer' : 'editor', id);
+      navigate(viewerTypes.includes(parsed.type) ? `/file-viewer/${id}` : `/editor/${id}`);
     } catch (err) {
       console.error('Import failed:', err);
       alert('Failed to import file. Please try a supported format.');
     }
     e.target.value = '';
-  }, [onNavigate]);
+  }, [navigate]);
 
   const getIcon = (type) => {
     switch (type) {
@@ -183,7 +185,7 @@ const HomePage = ({ onNavigate }) => {
               Recent Documents
             </h2>
             <button
-              onClick={() => onNavigate('quick-access')}
+              onClick={() => navigate('/quick-access')}
               className="text-sm text-blue-600 dark:text-blue-400 font-medium hover:underline flex items-center gap-1"
             >
               View all <ArrowRight size={14} />
@@ -199,7 +201,7 @@ const HomePage = ({ onNavigate }) => {
                   key={file.id}
                   onClick={() => {
                     const viewerTypes = ['pdf', 'image'];
-                    onNavigate(viewerTypes.includes(file.type) ? 'file-viewer' : 'editor', file.id);
+                    navigate(viewerTypes.includes(file.type) ? `/file-viewer/${file.id}` : `/editor/${file.id}`);
                   }}
                   className="flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700/60 hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all text-left group"
                 >
@@ -261,7 +263,7 @@ const HomePage = ({ onNavigate }) => {
               Create a Document
             </button>
             <button
-              onClick={() => onNavigate('quick-access')}
+              onClick={() => navigate('/quick-access')}
               className="px-6 py-3 rounded-xl font-semibold border-2 border-white/30 text-white hover:bg-white/10 transition-all"
             >
               Browse Files

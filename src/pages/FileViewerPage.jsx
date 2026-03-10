@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Download, Edit3, Eye, FileText,
   ZoomIn, ZoomOut, RotateCw, Maximize2,
@@ -141,7 +142,9 @@ const HtmlPreview = ({ htmlContent }) => (
 /* ------------------------------------------------------------------ */
 /*  Main FileViewerPage                                                */
 /* ------------------------------------------------------------------ */
-const FileViewerPage = ({ fileId, onNavigate }) => {
+const FileViewerPage = () => {
+  const { fileId } = useParams();
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -164,7 +167,7 @@ const FileViewerPage = ({ fileId, onNavigate }) => {
 
   const handleExtractAndEdit = () => {
     recordExtraction();
-    onNavigate('editor', fileId);
+    navigate(`/editor/${fileId}`);
   };
 
   const handleDownloadOriginal = () => {
@@ -203,7 +206,7 @@ const FileViewerPage = ({ fileId, onNavigate }) => {
       <div className="flex flex-col items-center justify-center h-96 gap-4">
         <File size={48} className="text-gray-300" />
         <p className="text-gray-500">File not found</p>
-        <button onClick={() => onNavigate('quick-access')} className="text-blue-600 hover:underline text-sm">Back to Quick Access</button>
+        <button onClick={() => navigate('/quick-access')} className="text-blue-600 hover:underline text-sm">Back to Quick Access</button>
       </div>
     );
   }
@@ -222,7 +225,7 @@ const FileViewerPage = ({ fileId, onNavigate }) => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 px-5 py-4 shadow-sm">
           <div className="flex items-center gap-3 min-w-0">
             <button
-              onClick={() => onNavigate('quick-access')}
+              onClick={() => navigate('/quick-access')}
               className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors flex-shrink-0"
               title="Back"
             >

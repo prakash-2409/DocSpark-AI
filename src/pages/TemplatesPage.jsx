@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LayoutTemplate, Search, ArrowRight, Sparkles } from 'lucide-react';
 import { TEMPLATES, TEMPLATE_CATEGORIES } from '../lib/templates';
@@ -10,7 +11,8 @@ import { saveFile } from '../lib/storage';
  * Organised by category: School, College, Professional, Professor.
  * Clicking a template creates a new document and opens it in the editor.
  */
-const TemplatesPage = ({ onNavigate }) => {
+const TemplatesPage = () => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('all');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(null); // templateId being created
@@ -24,14 +26,14 @@ const TemplatesPage = ({ onNavigate }) => {
   const handleUseTemplate = async (template) => {
     setLoading(template.id);
     try {
-      const doc = await saveFile({
+      const id = await saveFile({
         name: template.title,
         type: 'template',
         htmlContent: template.htmlContent.trim(),
         rawData: new Uint8Array(),
         size: new Blob([template.htmlContent]).size,
       });
-      onNavigate('editor', doc.id);
+      navigate(`/editor/${id}`);
     } catch (err) {
       console.error('Failed to create from template:', err);
     } finally {

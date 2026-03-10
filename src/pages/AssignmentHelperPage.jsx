@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Wand2, Check, FileText, ClipboardList, AlignLeft,
@@ -12,7 +13,8 @@ import { saveFile } from '../lib/storage';
  * AssignmentHelperPage — SEO landing page for /assignment-helper.
  * Targets students searching for "assignment formatter" or "format my assignment".
  */
-const AssignmentHelperPage = ({ onNavigate }) => {
+const AssignmentHelperPage = () => {
+  const navigate = useNavigate();
   const handleImport = useCallback(async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -25,12 +27,12 @@ const AssignmentHelperPage = ({ onNavigate }) => {
         htmlContent: parsed.htmlContent,
         size: file.size,
       });
-      onNavigate('editor', id);
+      navigate(`/editor/${id}`);
     } catch (err) {
       alert('Failed to open file.');
     }
     e.target.value = '';
-  }, [onNavigate]);
+  }, [navigate]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -72,7 +74,7 @@ const AssignmentHelperPage = ({ onNavigate }) => {
                   htmlContent: '<h1>Assignment Title</h1><h2>Introduction</h2><p>Write your introduction here...</p><h2>Main Body</h2><p>Write your main content here...</p><h2>Conclusion</h2><p>Summarise your findings...</p><h2>References</h2><p>List your references...</p>',
                   size: 0,
                 });
-                onNavigate('editor', id);
+                navigate(`/editor/${id}`);
               }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-orange-300 transition-all"
             >

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -27,7 +28,9 @@ import { ArrowLeft, Save, CheckCircle, Loader2, Maximize2 } from 'lucide-react';
  * Auto-saves content back to IndexedDB on change (debounced).
  * Shows FormatToolbar + ExportMenu + optional AI toolbar.
  */
-const EditorPage = ({ fileId, onNavigate }) => {
+const EditorPage = () => {
+  const { fileId } = useParams();
+  const navigate = useNavigate();
   const [docMeta, setDocMeta] = useState(null);      // { id, name, type, ... }
   const [loading, setLoading] = useState(!!fileId);
   const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved'
@@ -166,7 +169,7 @@ const EditorPage = ({ fileId, onNavigate }) => {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-3 min-w-0">
           <button
-            onClick={() => onNavigate('quick-access')}
+            onClick={() => navigate('/quick-access')}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 transition-colors flex-shrink-0"
             title="Back to Quick Access"
           >
